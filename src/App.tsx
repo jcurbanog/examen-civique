@@ -5,6 +5,7 @@ import { ListView } from './views/ListView';
 import { MockView } from './views/MockView';
 import { HistoryView } from './views/HistoryView';
 import { ReviewView } from './views/ReviewView';
+import { AboutView } from './views/AboutView';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/liste" element={<ListView />} />
           <Route path="/examen" element={<MockView />} />
           <Route path="/historique" element={<HistoryView />} />
+          <Route path="/a-propos" element={<AboutView />} />
           <Route path="/reviser/:attemptId" element={<ReviewView />} />
         </Routes>
       </Layout>

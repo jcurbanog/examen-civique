@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, List, FileText, History, Menu, X } from 'lucide-react';
+import { Home, List, FileText, History, Info, Menu, X } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,7 +16,8 @@ const navItems: NavItem[] = [
   { path: '/quiz', label: 'Quiz', icon: <Home size={20} /> },
   { path: '/liste', label: 'Liste', icon: <List size={20} /> },
   { path: '/examen', label: 'Examen', icon: <FileText size={20} /> },
-  { path: '/historique', label: 'Historique', icon: <History size={20} /> }
+  { path: '/historique', label: 'Historique', icon: <History size={20} /> },
+  { path: '/a-propos', label: 'À propos', icon: <Info size={20} /> }
 ];
 
 export function Layout({ children }: LayoutProps) {

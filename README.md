@@ -53,6 +53,12 @@ npm run build
 - Bouton "Réviser" pour pratiquer les questions manquées
 - Classement chronologique inversé (plus récent en premier)
 
+### 5. À propos (À propos)
+- Informations sur les sources des questions
+- Avertissements et disclaimers importants
+- Ressources officielles recommandées
+- Informations légales et licence open source
+
 ## 🎯 Catégories de Questions
 
 1. **Principes et valeurs de la République** (38 questions)
@@ -133,6 +139,41 @@ Format :
 - Le mode examen respecte le format officiel (40 questions, 45 minutes)
 - Seuil de réussite : 80% (32/40)
 
+## ⚠️ Avertissement Important
+
+### Source des questions
+
+Les questions de cette application proviennent des ressources officielles fournies par le gouvernement français pour la préparation à l'examen civique de naturalisation :
+
+- [Naturalisation française : comment passer l'examen civique ?](https://www.service-public.gouv.fr/particuliers/vosdroits/F39426)
+
+**Important :** Bien que les énoncés des questions proviennent des ressources officielles, les options de réponse multiples (y compris les réponses marquées comme "correctes") ont été générées par intelligence artificielle (Gemini) et **peuvent contenir des erreurs ou ne pas représenter fidèlement l'examen réel**.
+
+### Clause de non-responsabilité
+
+Cette application doit être utilisée uniquement comme un **outil complémentaire de préparation** à l'examen civique, mention naturalisation. Elle ne remplace pas l'étude des documents officiels.
+
+**L'auteur décline toute responsabilité** quant aux préjudices qui pourraient résulter de l'utilisation exclusive de cet outil. La préparation à l'examen relève de la responsabilité individuelle de chaque candidat. L'auteur n'a aucun lien avec les autorités officielles et ne dispose pas d'un accès privilégié aux questions ou réponses de l'examen réel.
+
+### Recommandations
+
+- Consultez les sources officielles pour une préparation complète
+- Utilisez cette application en complément d'autres ressources
+- Vérifiez toujours les informations importantes avec les documents officiels
+- Cette application ne garantit pas le succès à l'examen
+
+## 📄 Licence et Code Source
+
+Cette application est **gratuite** et son code source est disponible sous licence open source.
+
+**Code source :** [Lien GitHub à ajouter]
+
+Les contributions et suggestions d'amélioration sont les bienvenues.
+
+## 🔒 Protection des Données
+
+Cette application ne collecte aucune donnée personnelle. Toutes les informations (historique des tentatives) sont stockées localement dans votre navigateur via le localStorage et ne sont jamais transmises à des serveurs externes.
+
 ## 🔧 Scripts Disponibles
 
 - `npm run dev` - Lance le serveur de développement
@@ -140,6 +181,44 @@ Format :
 - `npm run preview` - Prévisualise le build de production
 - `npm run lint` - Vérifie le code avec ESLint
 
-## 📄 Licence
+## 🌐 Ressources Officielles
 
-Ce projet est destiné à un usage personnel pour la préparation à l'examen de naturalisation française.
+Pour une préparation complète à l'examen civique, consultez les ressources officielles :
+
+- [Guide officiel de l'examen civique](https://www.service-public.gouv.fr/particuliers/vosdroits/F39426)
+- [Ministère de l'Intérieur - Immigration](https://www.immigration.interieur.gouv.fr/)
+- Livret du citoyen (disponible sur Service-Public.fr)
+- Charte des droits et devoirs du citoyen français
+
+## 📞 Contact et Contributions
+
+Cette application est un projet open source. Pour signaler des problèmes, suggérer des améliorations ou contribuer :
+
+- Ouvrez une issue sur GitHub
+- Soumettez une pull request
+- Consultez le code source : [Lien à ajouter]
+
+## ⚖️ Informations Légales Complémentaires
+
+**Propriété intellectuelle :** Les questions proviennent de sources gouvernementales françaises officielles. Les options de réponse générées et le code de l'application sont fournis sous licence open source.
+
+**Utilisation :** Cette application est destinée à un usage personnel et éducatif uniquement.
+
+**Modification :** L'auteur se réserve le droit de modifier, mettre à jour ou interrompre l'application à tout moment.
+
+---
+
+## 📋 Disclaimer / Clause de non-responsabilité
+
+Cette application est fournie "en l'état", sans garantie d'aucune sorte. En l'utilisant, vous reconnaissez et acceptez que :
+
+- Les informations peuvent contenir des inexactitudes
+- L'application ne garantit pas le succès à l'examen officiel
+- Vous devez consulter les sources officielles pour une préparation complète
+- L'auteur ne peut être tenu responsable des résultats obtenus à l'examen
+
+---
+
+**Version :** 1.0.0 - Janvier 2026
+
+Ce projet est destiné à la préparation à l'examen civique pour la naturalisation française.
