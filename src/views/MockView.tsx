@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { questions } from '../data';
 import type { Question } from '../data';
 import { QuestionCard } from '../components/QuestionCard';
 import { Accordion } from '../components/Accordion';
 import { selectQuestionsByCategory, shuffleArray } from '../utils/quiz';
 import { saveAttempt } from '../utils/storage';
-import { Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
 type ExamState = 'instructions' | 'exam' | 'results';
 
@@ -21,6 +22,8 @@ export function MockView() {
   const [timeRemaining, setTimeRemaining] = useState(45 * 60); // 45 minutes in seconds
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [openAccordions, setOpenAccordions] = useState<Set<number>>(new Set());
+  const [hasReadDisclaimer, setHasReadDisclaimer] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
 
   // Timer effect
   useEffect(() => {
@@ -41,6 +44,11 @@ export function MockView() {
   }, [examState]);
 
   const startExam = () => {
+    if (!hasReadDisclaimer) {
+      setShowValidation(true);
+      return;
+    }
+
     // Select 40 questions with at least 5 from each category
     const selected = selectQuestionsByCategory(questions, 5);
 
@@ -53,6 +61,7 @@ export function MockView() {
     setExamQuestions(questionsWithShuffledAnswers);
     setExamState('exam');
     setTimeRemaining(45 * 60);
+    setShowValidation(false);
   };
 
   const handleSelectAnswer = (answerId: string) => {
@@ -117,41 +126,103 @@ export function MockView() {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-6">
-              Examen Blanc
+              Simulation d'Examen Civique
             </h1>
 
             <div className="space-y-4 text-gray-700 mb-8">
+              <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4">
+                <div className="flex items-start space-x-3">
+                  <AlertCircle className="text-amber-600 mt-0.5 flex-shrink-0" size={20} />
+                  <div>
+                    <p className="font-semibold text-amber-900 mb-1">
+                      Ceci est une simulation
+                    </p>
+                    <p className="text-amber-800 text-sm">
+                      Cette simulation vous permet de vous entraîner dans des conditions similaires à l'examen réel. 
+                      Il ne s'agit <strong>pas d'un examen officiel</strong>. Les questions et réponses peuvent 
+                      contenir des erreurs et ne reflètent pas nécessairement l'examen réel.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <p className="text-lg">
-                Bienvenue à l'examen blanc de naturalisation française.
+                Entraînez-vous dans des conditions similaires à l'examen civique pour la naturalisation française.
               </p>
 
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4">
-                <h2 className="font-semibold mb-2">Conditions de l'examen :</h2>
+                <h2 className="font-semibold mb-2">Format de la simulation :</h2>
                 <ul className="list-disc list-inside space-y-2">
-                  <li>40 questions au total</li>
+                  <li>40 questions sélectionnées aléatoirement</li>
                   <li>Au moins 5 questions de chaque catégorie</li>
                   <li>Durée : 45 minutes</li>
-                  <li>Score minimum pour réussir : 32/40 (80%)</li>
+                  <li>Score requis pour réussir : 32/40 (80%)</li>
                 </ul>
               </div>
 
-              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+              <div className="bg-slate-50 border-l-4 border-slate-500 p-4">
                 <h2 className="font-semibold mb-2">Instructions :</h2>
                 <ul className="list-disc list-inside space-y-2">
                   <li>Lisez chaque question attentivement</li>
                   <li>Sélectionnez une réponse pour chaque question</li>
                   <li>Le chronomètre démarre dès que vous commencez</li>
                   <li>Vous ne pouvez pas revenir en arrière</li>
-                  <li>L'examen se termine automatiquement après 45 minutes</li>
+                  <li>La simulation se termine automatiquement après 45 minutes</li>
                 </ul>
               </div>
             </div>
 
+            {/* Disclaimer Checkbox */}
+            <div className="mb-6">
+              <label 
+                className={`flex items-start space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${
+                  showValidation && !hasReadDisclaimer
+                    ? 'border-red-500 bg-red-50'
+                    : hasReadDisclaimer
+                    ? 'border-green-500 bg-green-50'
+                    : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={hasReadDisclaimer}
+                  onChange={(e) => {
+                    setHasReadDisclaimer(e.target.checked);
+                    if (e.target.checked) setShowValidation(false);
+                  }}
+                  className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                />
+                <span className="text-sm text-gray-700 flex-1">
+                  J'ai lu et compris la section{' '}
+                  <Link 
+                    to="/a-propos" 
+                    className="text-blue-600 hover:text-blue-800 font-semibold underline"
+                    target="_blank"
+                  >
+                    À propos
+                  </Link>
+                  {' '}et je comprends que cette simulation peut contenir des erreurs et ne remplace pas 
+                  la préparation avec les documents officiels.
+                  <span className="text-red-600 ml-1">*</span>
+                </span>
+              </label>
+              {showValidation && !hasReadDisclaimer && (
+                <p className="text-red-600 text-sm mt-2 ml-8">
+                  Vous devez lire la section "À propos" avant de commencer la simulation.
+                </p>
+              )}
+            </div>
+
             <button
               onClick={startExam}
-              className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+              disabled={!hasReadDisclaimer}
+              className={`w-full py-4 rounded-lg font-semibold text-lg transition-all shadow-md ${
+                hasReadDisclaimer
+                  ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg cursor-pointer'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
             >
-              Commencer l'examen
+              {hasReadDisclaimer ? 'Commencer la simulation' : 'Commencer la simulation (lecture requise)'}
             </button>
           </div>
         </div>
@@ -180,7 +251,7 @@ export function MockView() {
         </div>
 
         <div className="max-w-3xl mx-auto mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Examen Blanc</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Simulation d'Examen</h1>
         </div>
 
         <QuestionCard
@@ -217,7 +288,7 @@ export function MockView() {
             </div>
 
             <h1 className="text-3xl font-bold mb-2">
-              {passed ? 'Félicitations !' : 'Examen non réussi'}
+              {passed ? 'Félicitations !' : 'Simulation non réussie'}
             </h1>
 
             <div className="text-5xl font-bold mb-4">
@@ -229,8 +300,8 @@ export function MockView() {
 
             <p className="text-lg text-gray-600">
               {passed
-                ? 'Vous avez réussi l\'examen avec succès !'
-                : 'Vous devez obtenir au moins 32/40 pour réussir.'}
+                ? 'Vous avez réussi la simulation avec succès ! À l\'examen réel, ce score vous permettrait de réussir.'
+                : 'Vous devez obtenir au moins 32/40 pour réussir l\'examen réel. Continuez à vous entraîner !'}
             </p>
 
             {!passed && (
@@ -280,10 +351,12 @@ export function MockView() {
               setCurrentQuestionIndex(0);
               setUserAnswers({});
               setSelectedAnswer(null);
+              setHasReadDisclaimer(false);
+              setShowValidation(false);
             }}
             className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
           >
-            Recommencer un examen
+            Recommencer une simulation
           </button>
         </div>
       </div>

@@ -59,23 +59,23 @@ export function HistoryView() {
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-gray-800 mb-2">Historique</h1>
             <p className="text-gray-600">
-              Consultez vos tentatives d'examen précédentes
+              Consultez vos tentatives de simulation précédentes
             </p>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-12 text-center">
             <BookOpen size={64} className="mx-auto text-gray-300 mb-4" />
             <h2 className="text-xl font-semibold text-gray-700 mb-2">
-              Aucune tentative d'examen
+              Aucune simulation effectuée
             </h2>
             <p className="text-gray-500 mb-6">
-              Passez votre premier examen blanc pour voir votre historique ici.
+              Passez votre première simulation pour voir votre historique ici.
             </p>
             <button
               onClick={() => navigate('/examen')}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
             >
-              Commencer un examen
+              Commencer une simulation
             </button>
           </div>
         </div>
@@ -89,7 +89,7 @@ export function HistoryView() {
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Historique</h1>
           <p className="text-gray-600">
-            Consultez vos tentatives d'examen précédentes
+            Consultez vos tentatives de simulation précédentes
           </p>
         </div>
 
@@ -183,13 +183,13 @@ export function HistoryView() {
           ))}
         </div>
 
-        {/* New Exam Button */}
+        {/* New Simulation Button */}
         <div className="mt-8 text-center">
           <button
             onClick={() => navigate('/examen')}
             className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
           >
-            Nouveau examen
+            Nouvelle simulation
           </button>
         </div>
       </div>

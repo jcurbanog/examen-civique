@@ -39,11 +39,12 @@ npm run build
 - Défilement infini (chargement de 20 questions à la fois)
 - Accordéons automatiquement dépliés si ≤5 résultats
 
-### 3. Mode Examen (Examen)
+### 3. Mode Examen (Simulation)
 - Simulation d'examen réel
 - 40 questions aléatoires (minimum 5 par catégorie)
 - Chronomètre de 45 minutes
 - Notation finale : 32/40 requis pour réussir
+- Case à cocher obligatoire confirmant la lecture de la section "À propos"
 - Sauvegarde des tentatives dans le localStorage
 - Revue des réponses incorrectes
 
