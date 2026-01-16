@@ -100,10 +100,10 @@ export function AboutView() {
                   href="https://github.com/jcurbanog/examen-civique"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                  className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-medium transition-colors group"
                 >
-                  <span>https://github.com/jcurbanog/examen-civique</span>
-                  <ExternalLink size={16} />
+                  <span className="break-all">https://github.com/jcurbanog/examen-civique</span>
+                  <ExternalLink size={16} className="flex-shrink-0" />
                 </a>
               </div>
               <p className="text-sm text-gray-600">
