@@ -96,7 +96,15 @@ export function AboutView() {
               </p>
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <p className="text-sm text-gray-600 mb-2">Code source disponible sur :</p>
-                <p className="text-gray-500 italic">[Lien GitHub à ajouter après publication]</p>
+                <a
+                  href="https://github.com/jcurbanog/examen-civique"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                >
+                  <span>https://github.com/jcurbanog/examen-civique</span>
+                  <ExternalLink size={16} />
+                </a>
               </div>
               <p className="text-sm text-gray-600">
                 Les contributions et suggestions d'amélioration sont les bienvenues via le dépôt GitHub.
