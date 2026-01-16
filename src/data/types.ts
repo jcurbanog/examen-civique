@@ -16,9 +16,11 @@ export interface Category {
   name: string;
 }
 
-export enum FeedbackType {
-  WRONG_CORRECT_ANSWER = 'wrong_correct_answer',
-  TOO_EVIDENT = 'too_evident',
-  APPEARED_IN_EXAM = 'appeared_in_exam',
-  OTHER = 'other'
-}
+export const FeedbackType = {
+  WRONG_CORRECT_ANSWER: 'wrong_correct_answer',
+  TOO_EVIDENT: 'too_evident',
+  APPEARED_IN_EXAM: 'appeared_in_exam',
+  OTHER: 'other'
+} as const;
+
+export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType];
