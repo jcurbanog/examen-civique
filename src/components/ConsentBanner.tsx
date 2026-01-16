@@ -35,7 +35,7 @@ export function ConsentBanner({ onConsentDecided }: ConsentBannerProps) {
               Analyses anonymes
             </h3>
             <p className="text-sm text-gray-600">
-              Nous collectons des données d'utilisation anonymes (taux de réussite, usage de l'application) via Datadog pour améliorer l'expérience. Des informations réseau (adresse IP, localisation approximée) peuvent être collectées. Aucune donnée personnelle identifiable n'est stockée.
+              Nous collectons des données d'utilisation anonymes (taux de réussite, usage de l'application) pour améliorer l'expérience. Des informations réseau (adresse IP, localisation approximée) peuvent être collectées. Aucune donnée personnelle identifiable n'est stockée.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 md:flex-shrink-0">
