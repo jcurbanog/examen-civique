@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { consentManager } from '../utils/consent';
-import { datadogLogs } from '@datadog/browser-logs';
+import { initDatadog } from '../datadog';
 
 interface ConsentBannerProps {
   onConsentDecided: () => void;
@@ -14,13 +14,7 @@ export function ConsentBanner({ onConsentDecided }: ConsentBannerProps) {
   const handleAccept = () => {
     consentManager.setConsent('accepted');
 
-    // Initialize Datadog now that we have consent
-    datadogLogs.init({
-      clientToken: 'pubb1368dffbc42d59d60ea922125813310',
-      site: 'datadoghq.eu',
-      forwardErrorsToLogs: true,
-      sessionSampleRate: 100
-    });
+    initDatadog();
 
     setIsVisible(false);
     onConsentDecided();

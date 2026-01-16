@@ -13,7 +13,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { path: '/quiz', label: 'Quiz', icon: <Home size={20} /> },
+  { path: '/', label: 'Quiz', icon: <Home size={20} /> },
   { path: '/liste', label: 'Liste', icon: <List size={20} /> },
   { path: '/examen', label: 'Simulation', icon: <FileText size={20} /> },
   { path: '/historique', label: 'Historique', icon: <History size={20} /> },
