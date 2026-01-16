@@ -2,23 +2,42 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAttempts } from '../utils/storage';
 import type { QuizAttempt } from '../utils/storage';
+import { logger } from '../utils/logging';
 import { Calendar, Award, BookOpen } from 'lucide-react';
 
 export function HistoryView() {
   const [attempts, setAttempts] = useState<QuizAttempt[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadAttempts();
-  }, []);
+ 
 
   const loadAttempts = () => {
     const loadedAttempts = getAttempts();
     // Sort by timestamp descending (most recent first)
     const sorted = loadedAttempts.sort((a, b) => b.timestamp - a.timestamp);
     setAttempts(sorted);
+    
+    // Log history view opened with statistics
+    if (sorted.length > 0) {
+      const successfulAttempts = sorted.filter((a) => a.score >= 32).length;
+      const avgScore = Math.round(sorted.reduce((sum, a) => sum + a.score, 0) / sorted.length);
+      const bestScore = Math.max(...sorted.map((a) => a.score));
+      const worstScore = Math.min(...sorted.map((a) => a.score));
+      
+      logger.historyViewOpened({
+        numberOfAttempts: sorted.length,
+        totalSuccessfulAttempts: successfulAttempts,
+        averageScore: avgScore,
+        bestScore: bestScore,
+        worstScore: worstScore,
+      });
+    }
   };
 
+  useEffect(() => {
+    loadAttempts();
+  }, []);
+  
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString('fr-FR', {
@@ -37,6 +56,15 @@ export function HistoryView() {
   };
 
   const handleReview = (timestamp: number) => {
+    const attempt = attempts.find((a) => a.timestamp === timestamp);
+    
+    if (attempt) {
+      logger.reviewButtonClicked({
+        scoreOfAttempt: attempt.score,
+        questionIdsToReview: attempt.wrongQuestionIds,
+      });
+    }
+    
     navigate(`/reviser/${timestamp}`);
   };
 

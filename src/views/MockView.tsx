@@ -6,9 +6,12 @@ import { QuestionCard } from '../components/QuestionCard';
 import { Accordion } from '../components/Accordion';
 import { selectQuestionsByCategory, shuffleArray } from '../utils/quiz';
 import { saveAttempt } from '../utils/storage';
+import { logger } from '../utils/logging';
 import { Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
 type ExamState = 'instructions' | 'exam' | 'results';
+
+const DEFAULT_TIME_REMAINING = 45 * 60;
 
 interface UserAnswers {
   [questionId: number]: string;
@@ -19,7 +22,7 @@ export function MockView() {
   const [examQuestions, setExamQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
-  const [timeRemaining, setTimeRemaining] = useState(45 * 60); // 45 minutes in seconds
+  const [timeRemaining, setTimeRemaining] = useState(DEFAULT_TIME_REMAINING); // 45 minutes in seconds
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [openAccordions, setOpenAccordions] = useState<Set<number>>(new Set());
   const [hasReadDisclaimer, setHasReadDisclaimer] = useState(false);
@@ -33,7 +36,7 @@ export function MockView() {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          finishExam();
+          finishExam(0);
           return 0;
         }
         return prev - 1;
@@ -60,8 +63,13 @@ export function MockView() {
 
     setExamQuestions(questionsWithShuffledAnswers);
     setExamState('exam');
-    setTimeRemaining(45 * 60);
+    setTimeRemaining(DEFAULT_TIME_REMAINING);
     setShowValidation(false);
+    
+    // Log simulation started
+    logger.simulationStarted({
+      numberOfQuestions: questionsWithShuffledAnswers.length,
+    });
   };
 
   const handleSelectAnswer = (answerId: string) => {
@@ -82,23 +90,36 @@ export function MockView() {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
     } else {
-      finishExam();
+      finishExam(timeRemaining);
     }
   };
 
-  const finishExam = () => {
+  const finishExam = (timeRemaining: number) => {
     setExamState('results');
 
-    // Calculate wrong answers
+    // Calculate results
     const wrongQuestionIds = examQuestions
       .filter((q) => userAnswers[q.id] !== q.correctAnswerId)
       .map((q) => q.id);
+    
+    const score = 40 - wrongQuestionIds.length;
+    const timeTaken = DEFAULT_TIME_REMAINING - timeRemaining; // in seconds
+    const completionReason = timeRemaining <= 1 ? 'time_expired' : 'finished';
 
     // Auto-expand wrong answers
     setOpenAccordions(new Set(wrongQuestionIds));
 
     // Save to localStorage
     saveAttempt(wrongQuestionIds);
+    
+    // Log simulation completed
+    logger.simulationCompleted({
+      finalScore: score,
+      passStatus: score >= 32,
+      timeTaken: timeTaken,
+      wrongAnswerIds: wrongQuestionIds,
+      completionReason: completionReason,
+    });
   };
 
   const formatTime = (seconds: number) => {
@@ -256,8 +277,8 @@ export function MockView() {
 
         <QuestionCard
           question={currentQuestion}
-          selectedAnswer={selectedAnswer}
-          onSelectAnswer={handleSelectAnswer}
+          selectedAnswerId={selectedAnswer}
+          onSelectAnswerId={handleSelectAnswer}
           showResult={false}
           onSubmit={handleAnswerQuestion}
           onNext={handleAnswerQuestion}

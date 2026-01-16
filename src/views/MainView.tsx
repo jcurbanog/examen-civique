@@ -6,7 +6,7 @@ import { shuffleArray } from '../utils/quiz';
 
 export function MainView() {
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
 
   const loadNewQuestion = () => {
@@ -18,7 +18,7 @@ export function MainView() {
     const shuffled = shuffleArray(question.answers);
 
     setCurrentQuestion({ ...question, answers: shuffled });
-    setSelectedAnswer(null);
+    setSelectedAnswerId(null);
     setShowResult(false);
   };
 
@@ -27,7 +27,7 @@ export function MainView() {
   }, []);
 
   const handleSelectAnswer = (answerId: string) => {
-    setSelectedAnswer(answerId);
+    setSelectedAnswerId(answerId);
   };
 
   const handleSubmit = () => {
@@ -57,8 +57,8 @@ export function MainView() {
 
       <QuestionCard
         question={currentQuestion}
-        selectedAnswer={selectedAnswer}
-        onSelectAnswer={handleSelectAnswer}
+        selectedAnswerId={selectedAnswerId}
+        onSelectAnswerId={handleSelectAnswer}
         showResult={showResult}
         onSubmit={handleSubmit}
         onNext={handleNext}

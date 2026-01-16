@@ -5,6 +5,7 @@ import type { Question } from '../data';
 import { QuestionCard } from '../components/QuestionCard';
 import { getAttemptQuestions } from '../utils/storage';
 import { shuffleArray } from '../utils/quiz';
+import { logger } from '../utils/logging';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 
 export function ReviewView() {
@@ -64,7 +65,14 @@ export function ReviewView() {
       setSelectedAnswer(null);
       setShowResult(false);
     } else {
-      // All questions reviewed, navigate back to history
+      // All questions reviewed, calculate improvement rate and log
+      const improvementRate = (answeredCorrectly.size / reviewQuestions.length) * 100;
+      
+      logger.reviewSessionCompleted({
+        improvementRate: Math.round(improvementRate),
+      });
+      
+      // Navigate back to history
       navigate('/historique');
     }
   };
@@ -125,8 +133,8 @@ export function ReviewView() {
         {/* Question Card */}
         <QuestionCard
           question={currentQuestion}
-          selectedAnswer={selectedAnswer}
-          onSelectAnswer={handleSelectAnswer}
+          selectedAnswerId={selectedAnswer}
+          onSelectAnswerId={handleSelectAnswer}
           showResult={showResult}
           onSubmit={handleSubmit}
           onNext={handleNext}

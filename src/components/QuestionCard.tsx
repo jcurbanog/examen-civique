@@ -1,9 +1,10 @@
 import type { Question, Answer } from '../data';
+import { logger } from '../utils/logging';
 
 interface QuestionCardProps {
   question: Question;
-  selectedAnswer: string | null;
-  onSelectAnswer: (answerId: string) => void;
+  selectedAnswerId: string | null;
+  onSelectAnswerId: (answerId: string) => void;
   showResult: boolean;
   onSubmit: () => void;
   onNext: () => void;
@@ -15,8 +16,8 @@ const INDEX_TO_LETTER = ['A', 'B', 'C', 'D'];
 
 export function QuestionCard({
   question,
-  selectedAnswer,
-  onSelectAnswer,
+  selectedAnswerId,
+  onSelectAnswerId,
   showResult,
   onSubmit,
   onNext,
@@ -27,7 +28,7 @@ export function QuestionCard({
     const baseClass = 'w-full text-left p-4 rounded-lg border-2 transition-all duration-200';
 
     if (!showResult) {
-      if (selectedAnswer === answer.id) {
+      if (selectedAnswerId === answer.id) {
         return `${baseClass} border-blue-500 bg-blue-50 font-medium`;
       }
       return `${baseClass} border-gray-200 hover:border-blue-300 hover:bg-blue-50`;
@@ -38,7 +39,7 @@ export function QuestionCard({
       return `${baseClass} border-green-500 bg-green-50 font-medium`;
     }
 
-    if (selectedAnswer === answer.id && answer.id !== question.correctAnswerId) {
+    if (selectedAnswerId === answer.id && answer.id !== question.correctAnswerId) {
       return `${baseClass} border-red-500 bg-red-50 font-medium`;
     }
 
@@ -54,7 +55,7 @@ export function QuestionCard({
       );
     }
 
-    if (selectedAnswer === answer.id && answer.id !== question.correctAnswerId) {
+    if (selectedAnswerId === answer.id && answer.id !== question.correctAnswerId) {
       return (
         <span className="ml-2 text-red-600 font-semibold">✗</span>
       );
@@ -62,6 +63,19 @@ export function QuestionCard({
 
     return null;
   };
+
+  const handleSubmit = () => {
+    if (!selectedAnswerId) return;
+    
+    logger.answerVerified({
+      questionId: question.id,
+      selectedAnswerId: selectedAnswerId,
+      correctAnswerId: question.correctAnswerId,
+      isCorrect: selectedAnswerId === question.correctAnswerId,
+    });
+    
+    onSubmit()
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 max-w-3xl mx-auto">
@@ -82,7 +96,7 @@ export function QuestionCard({
         {question.answers.map((answer, index) => (
           <button
             key={answer.id}
-            onClick={() => !showResult && onSelectAnswer(answer.id)}
+            onClick={() => !showResult && onSelectAnswerId(answer.id)}
             disabled={showResult}
             className={getAnswerClassName(answer)}
           >
@@ -101,10 +115,10 @@ export function QuestionCard({
       <div className="flex justify-end">
         {!showResult ? (
           <button
-            onClick={onSubmit}
-            disabled={!selectedAnswer}
+            onClick={handleSubmit}
+            disabled={!selectedAnswerId}
             className={`px-6 py-3 rounded-lg font-medium transition-all ${
-              selectedAnswer
+              selectedAnswerId
                 ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
