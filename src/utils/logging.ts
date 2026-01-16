@@ -1,4 +1,5 @@
 import { datadogLogs } from '@datadog/browser-logs';
+import { FeedbackType } from '../data/types';
 
 /**
  * Centralized logging utilities for Datadog
@@ -98,6 +99,22 @@ export const logger = {
     datadogLogs.logger.info('Review Session Completed', {
       event: 'review_session_completed',
       improvement_rate: data.improvementRate,
+    });
+  },
+
+  /**
+   * Log when a user submits feedback for a question
+   */
+  questionFeedback: (data: {
+    questionId: number;
+    feedbackType: FeedbackType;
+    customMessage?: string;
+  }) => {
+    datadogLogs.logger.info('Question Feedback', {
+      event: 'question_feedback',
+      question_id: data.questionId,
+      feedback_type: data.feedbackType,
+      custom_message: data.customMessage,
     });
   },
 };

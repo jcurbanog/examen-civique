@@ -1,5 +1,6 @@
 import type { Question, Answer } from '../data';
 import { logger } from '../utils/logging';
+import { FeedbackPopover } from './FeedbackPopover';
 
 interface QuestionCardProps {
   question: Question;
@@ -86,9 +87,12 @@ export function QuestionCard({
             Question {questionNumber} sur {totalQuestions}
           </div>
         )}
-        <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
-          {question.questionText}
-        </h2>
+        <div className="flex items-start justify-between gap-4">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 flex-1">
+            {question.questionText}
+          </h2>
+          <FeedbackPopover questionId={question.id} />
+        </div>
       </div>
 
       {/* Answer Options */}
