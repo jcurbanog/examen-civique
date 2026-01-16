@@ -77,6 +77,7 @@ npm run build
 - **Fuse.js** - Recherche floue
 - **Lucide React** - Icônes
 - **localStorage** - Persistance des données
+- **Datadog** - Analytics anonymes (optionnelles avec consentement)
 
 ## 📐 Architecture
 
@@ -173,7 +174,19 @@ Les contributions et suggestions d'amélioration sont les bienvenues.
 
 ## 🔒 Protection des Données
 
-Cette application ne collecte aucune donnée personnelle. Toutes les informations (historique des tentatives) sont stockées localement dans votre navigateur via le localStorage et ne sont jamais transmises à des serveurs externes.
+### Données locales
+
+Toutes vos informations personnelles (historique des tentatives, progression) sont stockées localement dans votre navigateur via le localStorage et ne sont jamais transmises à des serveurs externes.
+
+### Analyses anonymes (optionnelles)
+
+Avec votre consentement, nous collectons des données d'utilisation anonymes via Datadog pour améliorer l'application :
+
+- **Données collectées** : Taux de réussite, usage de l'application, erreurs techniques
+- **Informations réseau** : Adresse IP, localisation approximée (ville, pays) basée sur l'IP
+- **Aucune donnée personnelle identifiable** : Nous ne collectons ni nom, ni email, ni autre information personnelle
+
+**Vous gardez le contrôle** : Ces analyses sont entièrement optionnelles. Un bandeau de consentement vous permet d'accepter ou de refuser en un clic. Vous pouvez révoquer votre consentement à tout moment en effaçant les données de navigation de votre navigateur.
 
 ## 🔧 Scripts Disponibles
 

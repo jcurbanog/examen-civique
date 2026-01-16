@@ -120,8 +120,11 @@ export function AboutView() {
         <div className="space-y-3 text-gray-700 text-sm">
           <div>
             <h3 className="font-semibold text-gray-900 mb-1">Protection des données</h3>
+            <p className="mb-2">
+              <strong>Données locales :</strong> Toutes vos informations personnelles (historique des tentatives d'examen, progression) sont stockées localement dans votre navigateur via le localStorage et ne sont jamais transmises à des serveurs externes.
+            </p>
             <p>
-              Cette application ne collecte aucune donnée personnelle. Toutes les informations (historique des tentatives d'examen) sont stockées localement dans votre navigateur via le localStorage et ne sont jamais transmises à des serveurs externes.
+              <strong>Analyses anonymes (optionnelles) :</strong> Avec votre consentement, nous collectons des données d'utilisation anonymes (taux de réussite, usage de l'application) pour améliorer l'expérience. Ces analyses peuvent inclure des informations réseau (adresse IP, localisation approximée basée sur l'IP). Aucune donnée personnelle identifiable (nom, email, etc.) n'est collectée. Vous pouvez refuser ces analyses à tout moment en effaçant les données de navigation de votre navigateur.
             </p>
           </div>
           <div>

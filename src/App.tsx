@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
+import { ConsentBanner } from './components/ConsentBanner';
 import { MainView } from './views/MainView';
 import { ListView } from './views/ListView';
 import { MockView } from './views/MockView';
@@ -8,6 +10,8 @@ import { ReviewView } from './views/ReviewView';
 import { AboutView } from './views/AboutView';
 
 function App() {
+  const [showConsent, setShowConsent] = useState(true);
+
   return (
     <Router>
       <Layout>
@@ -21,6 +25,7 @@ function App() {
           <Route path="/reviser/:attemptId" element={<ReviewView />} />
         </Routes>
       </Layout>
+      {showConsent && <ConsentBanner onConsentDecided={() => setShowConsent(false)} />}
     </Router>
   );
 }

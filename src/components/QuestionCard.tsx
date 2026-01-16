@@ -1,6 +1,7 @@
 import type { Question, Answer } from '../data';
 import { logger } from '../utils/logging';
 import { FeedbackPopover } from './FeedbackPopover';
+import { consentManager } from '../utils/consent';
 
 interface QuestionCardProps {
   question: Question;
@@ -91,7 +92,7 @@ export function QuestionCard({
           <h2 className="text-xl md:text-2xl font-semibold text-gray-800 flex-1">
             {question.questionText}
           </h2>
-          <FeedbackPopover questionId={question.id} />
+          {consentManager.hasConsented() && <FeedbackPopover questionId={question.id} />}
         </div>
       </div>
 
