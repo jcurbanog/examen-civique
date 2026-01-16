@@ -2955,7 +2955,7 @@ export const questions: Question[] = [
   },
   {
     id: 247,
-    questionText: "L'attestation de participation à la JDC est-elle nécessaire ?",
+    questionText: "L'attestation de participation à la Journée Défense et Citoyenneté (JDC) est-elle nécessaire ?",
     answers: [
       { id: 'a', text: "Non, c'est facultatif" },
       { id: 'b', text: "Oui, notamment pour passer le permis de conduire et les examens officiels" },

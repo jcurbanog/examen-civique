@@ -11,6 +11,8 @@ interface QuestionCardProps {
   totalQuestions?: number;
 }
 
+const INDEX_TO_LETTER = ['A', 'B', 'C', 'D'];
+
 export function QuestionCard({
   question,
   selectedAnswer,
@@ -77,7 +79,7 @@ export function QuestionCard({
 
       {/* Answer Options */}
       <div className="space-y-3 mb-6">
-        {question.answers.map((answer) => (
+        {question.answers.map((answer, index) => (
           <button
             key={answer.id}
             onClick={() => !showResult && onSelectAnswer(answer.id)}
@@ -86,7 +88,7 @@ export function QuestionCard({
           >
             <span className="flex items-start">
               <span className="font-semibold mr-2 text-gray-600">
-                {answer.id.toUpperCase()}.
+                {INDEX_TO_LETTER[index]}.
               </span>
               <span className="flex-1">{answer.text}</span>
               {getAnswerLabel(answer)}
