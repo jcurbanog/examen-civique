@@ -90,16 +90,22 @@ export function MockView() {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
     } else {
-      finishExam(timeRemaining);
+      // Pass the final answer to finishExam to avoid race condition with state update
+      finishExam(timeRemaining, currentQuestion.id, selectedAnswer);
     }
   };
 
-  const finishExam = (timeRemaining: number) => {
+  const finishExam = (timeRemaining: number, finalQuestionId?: number, finalAnswer?: string) => {
     setExamState('results');
+
+    // Build complete answers including the final answer if provided
+    const completeAnswers = finalQuestionId && finalAnswer
+      ? { ...userAnswers, [finalQuestionId]: finalAnswer }
+      : userAnswers;
 
     // Calculate results
     const wrongQuestionIds = examQuestions
-      .filter((q) => userAnswers[q.id] !== q.correctAnswerId)
+      .filter((q) => completeAnswers[q.id] !== q.correctAnswerId)
       .map((q) => q.id);
     
     const score = 40 - wrongQuestionIds.length;
