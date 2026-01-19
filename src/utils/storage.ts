@@ -55,3 +55,40 @@ export function getAttemptQuestions(attemptId: string): number[] {
     return [];
   }
 }
+
+// Question queue management for main view
+const QUESTION_QUEUE_KEY = 'question-queue';
+
+function shuffleArray(array: number[]): number[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+export function getQuestionQueue(): number[] | null {
+  try {
+    const stored = localStorage.getItem(QUESTION_QUEUE_KEY);
+    if (!stored) return null;
+    return JSON.parse(stored);
+  } catch (error) {
+    console.error('Error loading question queue:', error);
+    return null;
+  }
+}
+
+export function setQuestionQueue(queue: number[]): void {
+  try {
+    localStorage.setItem(QUESTION_QUEUE_KEY, JSON.stringify(queue));
+  } catch (error) {
+    console.error('Error saving question queue:', error);
+  }
+}
+
+export function createShuffledQuestionQueue(totalQuestions: number): number[] {
+  // Create array of question IDs [1, 2, 3, ..., totalQuestions]
+  const questionIds = Array.from({ length: totalQuestions }, (_, i) => i + 1);
+  return shuffleArray(questionIds);
+}

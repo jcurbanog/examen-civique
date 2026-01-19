@@ -3,16 +3,52 @@ import { questions } from '../data';
 import type { Question } from '../data';
 import { QuestionCard } from '../components/QuestionCard';
 import { shuffleArray } from '../utils/quiz';
+import {
+  getQuestionQueue,
+  setQuestionQueue,
+  createShuffledQuestionQueue
+} from '../utils/storage';
 
 export function MainView() {
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [questionQueue, setQuestionQueueState] = useState<number[]>([]);
 
-  const loadNewQuestion = () => {
-    // Pick random question
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    const question = questions[randomIndex];
+  const handleQuestionQueueUpdate = (queue: number[]) => {
+    // Update localStorage
+    setQuestionQueue(queue);
+    // Update state to trigger loading the next question
+    setQuestionQueueState(queue);
+  };
+
+  // Initialize question queue on mount
+  useEffect(() => {
+    const storedQueue = getQuestionQueue();
+    console.log('storedQueue', storedQueue?.length);
+    const initialQueue = storedQueue && storedQueue.length > 0
+      ? storedQueue
+      : createShuffledQuestionQueue(questions.length);
+
+      handleQuestionQueueUpdate(initialQueue);
+  }, []);
+
+  // Load question when queue changes
+  useEffect(() => {
+    if (questionQueue.length > 0) {
+      loadNextQuestion();
+    }
+  }, [questionQueue]);
+
+  const loadNextQuestion = () => {
+    if (questionQueue.length === 0) return;
+
+    // Get the last question ID from the queue (without removing it yet)
+    const questionId = questionQueue[questionQueue.length - 1];
+
+    // Find question by ID
+    const question = questions.find(q => q.id === questionId);
+    if (!question) return;
 
     // Shuffle answers
     const shuffled = shuffleArray(question.answers);
@@ -21,10 +57,6 @@ export function MainView() {
     setSelectedAnswerId(null);
     setShowResult(false);
   };
-
-  useEffect(() => {
-    loadNewQuestion();
-  }, []);
 
   const handleSelectAnswer = (answerId: string) => {
     setSelectedAnswerId(answerId);
@@ -35,7 +67,16 @@ export function MainView() {
   };
 
   const handleNext = () => {
-    loadNewQuestion();
+    // Pop the last element from the queue
+    const newQueue = [...questionQueue];
+    newQueue.pop();
+
+    // If queue is empty, create a new shuffled queue
+    const updatedQueue = newQueue.length === 0
+      ? createShuffledQuestionQueue(questions.length)
+      : newQueue;
+
+    handleQuestionQueueUpdate(updatedQueue);
   };
 
   if (!currentQuestion) {
