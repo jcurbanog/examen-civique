@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Question, Answer } from '../data';
 import { logger } from '../utils/logging';
 import { FeedbackPopover } from './FeedbackPopover';
@@ -26,6 +27,8 @@ export function QuestionCard({
   questionNumber,
   totalQuestions
 }: QuestionCardProps) {
+  const [showExplication, setShowExplication] = useState(false);
+
   const getAnswerClassName = (answer: Answer) => {
     const baseClass = 'w-full text-left p-4 rounded-lg border-2 transition-all duration-200';
 
@@ -68,15 +71,21 @@ export function QuestionCard({
 
   const handleSubmit = () => {
     if (!selectedAnswerId) return;
-    
+
     logger.answerVerified({
       questionId: question.id,
       selectedAnswerId: selectedAnswerId,
       correctAnswerId: question.correctAnswerId,
       isCorrect: selectedAnswerId === question.correctAnswerId,
     });
-    
-    onSubmit()
+
+    setShowExplication(false);
+    onSubmit();
+  }
+
+  const handleNext = () => {
+    setShowExplication(false);
+    onNext();
   }
 
   return (
@@ -116,27 +125,44 @@ export function QuestionCard({
         ))}
       </div>
 
-      {/* Action Button */}
-      <div className="flex justify-end">
-        {!showResult ? (
-          <button
-            onClick={handleSubmit}
-            disabled={!selectedAnswerId}
-            className={`px-6 py-3 rounded-lg font-medium transition-all ${
-              selectedAnswerId
-                ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            }`}
-          >
-            Vérifier
-          </button>
+      {/* Explication */}
+      {showResult && showExplication && (
+        <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg text-gray-700 text-sm leading-relaxed">
+          {question.explication}
+        </div>
+      )}
+
+      {/* Action Buttons */}
+      <div className="flex items-center justify-between gap-3">
+        {showResult ? (
+          <>
+            <button
+              onClick={() => setShowExplication(prev => !prev)}
+              className="px-5 py-3 rounded-lg font-medium border-2 border-amber-400 text-amber-700 bg-amber-50 hover:bg-amber-100 transition-all"
+            >
+              {showExplication ? 'Masquer l\'explication' : 'Voir l\'explication'}
+            </button>
+            <button
+              onClick={handleNext}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+            >
+              Question suivante
+            </button>
+          </>
         ) : (
-          <button
-            onClick={onNext}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
-          >
-            Question suivante
-          </button>
+          <div className="ml-auto">
+            <button
+              onClick={handleSubmit}
+              disabled={!selectedAnswerId}
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                selectedAnswerId
+                  ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              Vérifier
+            </button>
+          </div>
         )}
       </div>
     </div>

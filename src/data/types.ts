@@ -9,6 +9,7 @@ export interface Question {
   answers: Answer[];
   correctAnswerId: string;
   category: string; // 'I', 'II', 'III', 'IV', 'V'
+  explication: string;
 }
 
 export interface Category {

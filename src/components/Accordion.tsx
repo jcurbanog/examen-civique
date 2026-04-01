@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import type { Question } from '../data';
 
@@ -18,6 +19,7 @@ export function Accordion({
   userAnswer,
   highlightWrong = false
 }: AccordionProps) {
+  const [showExplication, setShowExplication] = useState(false);
   const isWrong = highlightWrong && userAnswer && userAnswer !== question.correctAnswerId;
 
   return (
@@ -49,7 +51,7 @@ export function Accordion({
       {/* Content */}
       <div
         className={`transition-all duration-200 ease-in-out ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          isOpen ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
         } overflow-hidden`}
       >
         <div className="p-4 bg-gray-50 border-t border-gray-200">
@@ -84,6 +86,20 @@ export function Accordion({
               );
             })}
           </div>
+
+          {/* Explication */}
+          {showExplication && (
+            <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-gray-700 text-sm leading-relaxed">
+              {question.explication}
+            </div>
+          )}
+
+          <button
+            onClick={() => setShowExplication(prev => !prev)}
+            className="mt-3 px-4 py-2 rounded-lg text-sm font-medium border-2 border-amber-400 text-amber-700 bg-amber-50 hover:bg-amber-100 transition-all"
+          >
+            {showExplication ? "Masquer l'explication" : "Voir l'explication"}
+          </button>
         </div>
       </div>
     </div>
